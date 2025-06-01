@@ -1,6 +1,6 @@
 services:
   - type: worker
-    name: node-crawler
+    name: hirist-crawler
     env: node
     plan: free
     buildCommand: 'npm install'
