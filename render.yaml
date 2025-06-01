@@ -1,0 +1,11 @@
+services:
+  - type: worker
+    name: node-crawler
+    env: node
+    plan: free
+    buildCommand: 'npm install'
+    startCommand: 'node hirist-job-applier-forever.js'
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
