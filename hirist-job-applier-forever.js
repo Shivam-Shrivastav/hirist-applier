@@ -1,4 +1,7 @@
 const puppeteer = require('puppeteer');
+const path = require('path');
+
+
 const fs = require('fs');
 const { exec } = require('child_process');
 const ping = require('ping');
@@ -6,70 +9,70 @@ const ping = require('ping');
 // Configuration
 const CONFIG = {
   urls: [
-  // Add your URLs here
-  "https://www.hirist.tech/k/artificial-intelligence-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    // Add your URLs here
+    "https://www.hirist.tech/k/artificial-intelligence-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
 
-  "https://www.hirist.tech/k/artificial-intelligence-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/artificial-intelligence-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
 
-  "https://www.hirist.tech/k/machine-learning-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/machine-learning-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/machine-learning-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/machine-learning-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
 
-  "https://www.hirist.tech/k/nlp-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/nlp-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/nlp-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/nlp-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
 
-  "https://www.hirist.tech/k/generative-ai-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/generative-ai-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/generative-ai-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/generative-ai-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
 
-  "https://www.hirist.tech/k/predictive-modeling-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/predictive-modeling-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/predictive-modeling-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/predictive-modeling-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
 
-  "https://www.hirist.tech/k/query-segmentation-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/query-segmentation-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/query-segmentation-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/query-segmentation-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
 
-  "https://www.hirist.tech/k/ai-interface-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/ai-interface-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/ai-interface-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/ai-interface-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
 
-  "https://www.hirist.tech/k/llm-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/llm-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/llm-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/llm-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
 
-  "https://www.hirist.tech/k/deep-learning-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/deep-learning-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/deep-learning-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/deep-learning-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
 
-  "https://www.hirist.tech/k/mlops-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/mlops-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
-  "https://www.hirist.tech/k/security-architect-ai-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/security-architect-ai-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
-  "https://www.hirist.tech/k/cloud-architect-ai-ml-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/cloud-architect-ai-ml-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
-  "https://www.hirist.tech/k/data-scientist-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/data-scientist-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
-  "https://www.hirist.tech/k/data-modeling-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/data-modeling-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
-  "https://www.hirist.tech/k/analytics-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/analytics-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
-  "https://www.hirist.tech/k/data-science-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/data-science-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
-  "https://www.hirist.tech/k/data-mining-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/data-mining-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
-  "https://www.hirist.tech/k/tableau-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/tableau-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
-  "https://www.hirist.tech/k/power-bi-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/power-bi-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
-  "https://www.hirist.tech/k/quantitative-analytics-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/quantitative-analytics-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
-  "https://www.hirist.tech/k/data-visualization-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/data-visualization-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
-  "https://www.hirist.tech/k/data-analyst-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/data-analyst-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
-  "https://www.hirist.tech/k/python-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
-  "https://www.hirist.tech/k/python-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/nodejs-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/nodejs-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
-  "https://www.hirist.tech/k/full-stack-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/full-stack-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
-  "https://www.hirist.tech/k/restful-api-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
-  "https://www.hirist.tech/k/restful-api-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation"
-],
+    "https://www.hirist.tech/k/mlops-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/mlops-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/security-architect-ai-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/security-architect-ai-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/cloud-architect-ai-ml-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/cloud-architect-ai-ml-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/data-scientist-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/data-scientist-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/data-modeling-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/data-modeling-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/analytics-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/analytics-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/data-science-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/data-science-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/data-mining-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/data-mining-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/tableau-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/tableau-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/power-bi-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/power-bi-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/quantitative-analytics-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/quantitative-analytics-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/data-visualization-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/data-visualization-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/data-analyst-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/data-analyst-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/python-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/python-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/nodejs-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/nodejs-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/full-stack-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/full-stack-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation",
+    "https://www.hirist.tech/k/restful-api-jobs.html?locName=any%20location&locIds=0&exp=1&ref=topnavigation",
+    "https://www.hirist.tech/k/restful-api-jobs.html?locName=any%20location&locIds=0&exp=2&ref=topnavigation"
+  ],
   cookiesPath: './cookies.json',
   maxCheckboxes: 50,
   restartDelay: 4 * 60 * 60 * 1000, // 4 hours in milliseconds
@@ -109,7 +112,7 @@ function loadStats() {
 function saveStats() {
   stats.lastRun = new Date().toISOString();
   fs.writeFileSync(CONFIG.statsFile, JSON.stringify(stats, null, 2));
-  console.log('Stats saved:', stats);
+  // console.log('Stats saved:', stats);
 }
 
 // Check internet connection
@@ -129,7 +132,7 @@ async function waitForInternetConnection() {
     attempts++;
     const isConnected = await checkInternetConnection();
     if (isConnected) return true;
-    
+
     console.log(`No internet connection (attempt ${attempts}/${CONFIG.maxConnectionAttempts}). Retrying...`);
     await new Promise(resolve => setTimeout(resolve, CONFIG.connectionRetryDelay));
   }
@@ -178,7 +181,12 @@ async function processUrl(url, browser) {
       await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
       await autoScroll(page);
 
-      const checkboxes = await page.$$('div.job-apply-checkbox input.job-apply-input:not([disabled])');
+      // Scroll back to top to ensure checkboxes are visible
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await page.waitForTimeout(1000);
+
+      // Get all non-disabled checkboxes
+      const checkboxes = await page.$$('label.MuiFormControlLabel-root:not(.Mui-disabled) input.PrivateSwitchBase-input.mui-style-1m9pwf3');
       console.log(`Found ${checkboxes.length} non-disabled checkboxes`);
 
       if (checkboxes.length === 0) {
@@ -192,15 +200,25 @@ async function processUrl(url, browser) {
       let done_check_box = [];
 
       for (const checkbox of checkboxes) {
-        const checkboxId = await page.evaluate(el => el.id, checkbox);
-        if (processedCheckboxes.has(checkboxId)) continue;
+        // Get a unique identifier for the checkbox
+        let checkboxIdentifier = await page.evaluate(el => el.id, checkbox);
+        if (!checkboxIdentifier) {
+          // If no ID, use value or position as identifier
+          const value = await page.evaluate(el => el.value, checkbox);
+          const position = await page.evaluate(el => {
+            const rect = el.getBoundingClientRect();
+            return `${rect.top}_${rect.left}`;
+          }, checkbox);
+          checkboxIdentifier = value || position;
+        }
 
-        const label = await page.$(`label[for="${checkboxId}"]`);
-        if (label && !done_check_box.includes(checkboxId)) {
-          done_check_box.push(checkboxId);
-          await label.click();
-          console.log(`Clicked checkbox with ID: ${checkboxId}`);
-          processedCheckboxes.add(checkboxId);
+        if (processedCheckboxes.has(checkboxIdentifier)) continue;
+
+        // Click the checkbox directly
+        try {
+          await checkbox.click();
+          console.log(`Clicked checkbox with identifier: ${checkboxIdentifier}`);
+          processedCheckboxes.add(checkboxIdentifier);
           clickedCount++;
           urlAppliedCount++;
           stats.totalApplied++;
@@ -209,6 +227,12 @@ async function processUrl(url, browser) {
 
           // Save stats periodically during processing
           if (clickedCount % 10 === 0) saveStats();
+        } catch (error) {
+          console.error(`Error clicking checkbox with identifier ${checkboxIdentifier}:`, error);
+          // Scroll to the checkbox if not visible
+          await page.evaluate(el => el.scrollIntoView(), checkbox);
+          await page.waitForTimeout(500);
+          await checkbox.click().catch(e => console.log('Still unable to click checkbox'));
         }
 
         if (clickedCount >= CONFIG.maxCheckboxes) {
@@ -219,13 +243,29 @@ async function processUrl(url, browser) {
 
       await page.waitForTimeout(1000);
 
-      // Click the "Apply All" button
-      const applyAllButton = await page.$('div.fixed-apply-bar > div > button:nth-child(1)');
-      if (applyAllButton) {
-        const buttonText = await page.evaluate(el => el.textContent, applyAllButton);
-        console.log(`Found button with text: ${buttonText}`);
+      // Scroll to the Apply All button (which is typically at the bottom)
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+      await page.waitForTimeout(1000);
 
-        if (buttonText.includes('Apply All')) {
+      let applyAllButton = null;
+
+      // Method 1: Try finding by exact button text using XPath
+      const applyAllButtons = await page.$x('//button[contains(., "Apply All")]');
+      if (applyAllButtons.length > 0) {
+        applyAllButton = applyAllButtons[0];
+      } else {
+        // Method 2: Fallback to class-based selector
+        applyAllButton = await page.$('button.MuiButton-root');
+        if (applyAllButton) {
+          const buttonText = await page.evaluate(el => el.textContent, applyAllButton);
+          if (!buttonText.includes('Apply All')) {
+            applyAllButton = null;
+          }
+        }
+      }
+
+      if (applyAllButton) {
+        try {
           console.log('Clicking "Apply All" button');
           await applyAllButton.click();
           await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 10000 }).catch(e => {
@@ -234,11 +274,22 @@ async function processUrl(url, browser) {
 
           const pages = await browser.pages();
           if (pages.length > 2) await pages[pages.length - 1].close();
+        } catch (error) {
+          console.error('Error clicking Apply All button:', error);
+          // Scroll to the button and try again
+          await page.evaluate(el => el.scrollIntoView(), applyAllButton);
+          await page.waitForTimeout(500);
+          await applyAllButton.click().catch(e => console.log('Still unable to click Apply All button'));
         }
+      } else {
+        console.log('Could not find "Apply All" button');
       }
 
-      const totalCheckboxes = await page.$$eval('div.job-apply-checkbox input.job-apply-input:not([disabled])', boxes => boxes.length);
-      needToRevisit = processedCheckboxes.size < totalCheckboxes && clickedCount >= CONFIG.maxCheckboxes;
+      // Check how many non-disabled checkboxes remain
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await page.waitForTimeout(1000);
+      const remainingCheckboxes = await page.$$('label.MuiFormControlLabel-root:not(.Mui-disabled) input.PrivateSwitchBase-input.mui-style-1m9pwf3');
+      needToRevisit = remainingCheckboxes.length > 0 && clickedCount >= CONFIG.maxCheckboxes;
 
       stats.urlStats[url].lastProcessed = new Date().toISOString();
       await page.close();
@@ -278,7 +329,7 @@ async function autoScroll(page) {
 // Main processing loop
 async function processAllUrls() {
   let browser;
-  
+
   try {
     // Check internet connection before starting
     const isConnected = await checkInternetConnection();
@@ -291,10 +342,11 @@ async function processAllUrls() {
       }
     }
 
-    browser = await puppeteer.launch({
+    const browser = await puppeteer.launch({
       headless: "new",
-      defaultViewport: null,
-      args: ['--start-maximized']
+      // executablePath: '/snap/bin/chromium', // or '/usr/bin/chromium-browser' if apt install worked
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      defaultViewport: null
     });
 
     for (const url of CONFIG.urls) {
