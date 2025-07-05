@@ -1,15 +1,17 @@
 {
+  "name": "hirist-applier",
+  "version": "1.0.0",
+  "description": "",
+  "main": "hirist-job-applier-forever.js",
   "scripts": {
-  "start": "node hirist-job-applier-forever.js",
-  "postinstall": "puppeteer install"
-},
-"puppeteer": {
-  "args": ["--no-sandbox", "--disable-setuid-sandbox"]
-},
+    "start": "node hirist-job-applier-forever.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-  "puppeteer": "*",
-  "ping": "*"
-}
-
-  
+    "ping": "^0.4.4",
+    "puppeteer": "^21.5.0"
+  }
 }
